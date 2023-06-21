@@ -11,3 +11,19 @@ interface BlogData {
   date: string;
   category: string;
 }
+interface PostData {
+  banner: string;
+  title: string;
+  category: string;
+  desc: string;
+}
+
+interface UserData {
+  id: number;
+  name: string;
+  role: string;
+}
+interface ApiUsersData {
+  users: UserData[];
+  total: number;
+}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
+import { useRouter } from "next/navigation";
 
 const navData: NavData[] = [
   { id: 1, title: "Home" },
@@ -19,6 +20,15 @@ const navData: NavData[] = [
 const Nav = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [flyerTwo, setFlyerTwo] = useState<boolean>(false);
+
+  const user = JSON.parse(localStorage.getItem("user")!);
+  const router = useRouter();
+
+  const logoutUser = () => {
+    localStorage.removeItem("user");
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -67,6 +77,8 @@ const Nav = () => {
               navData={navData}
               flyerTwo={flyerTwo}
               setFlyerTwo={setFlyerTwo}
+              user={user}
+              logoutUser={logoutUser}
             />
           </div>
         </div>
@@ -81,7 +93,13 @@ const Nav = () => {
             To: "opacity-0 scale-95"
         */}
 
-        <MobileMenu open={open} setOpen={setOpen} navData={navData} />
+        <MobileMenu
+          open={open}
+          setOpen={setOpen}
+          navData={navData}
+          user={user}
+          logoutUser={logoutUser}
+        />
       </div>
     </>
   );

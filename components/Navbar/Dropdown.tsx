@@ -14,7 +14,7 @@ const Dropdown = ({ title, subitems, flyerTwo, setFlyerTwo }: PageProps) => {
       {/* Item active: "text-gray-900", Item inactive: "text-gray-500" */}
       <button
         type="button"
-        className="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none"
         onClick={() => setFlyerTwo(!flyerTwo)}
       >
         <span>{title}</span>

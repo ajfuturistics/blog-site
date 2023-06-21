@@ -7,9 +7,17 @@ interface PageProps {
   navData: NavData[];
   flyerTwo: boolean;
   setFlyerTwo: Dispatch<SetStateAction<boolean>>;
+  user?: any;
+  logoutUser: () => void;
 }
 
-const DesktopMenu = ({ navData, flyerTwo, setFlyerTwo }: PageProps) => {
+const DesktopMenu = ({
+  navData,
+  flyerTwo,
+  setFlyerTwo,
+  user,
+  logoutUser,
+}: PageProps) => {
   return (
     <nav className="hidden md:flex space-x-10">
       {navData.map((data) =>
@@ -34,6 +42,17 @@ const DesktopMenu = ({ navData, flyerTwo, setFlyerTwo }: PageProps) => {
             {data.title}
           </Link>
         )
+      )}
+
+      {user && (
+        <div>
+          <button
+            onClick={logoutUser}
+            className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900"
+          >
+            Sign out
+          </button>
+        </div>
       )}
     </nav>
   );

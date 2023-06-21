@@ -7,8 +7,16 @@ interface PageProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   navData: NavData[];
+  user?: any;
+  logoutUser: () => void;
 }
-const MobileMenu = ({ open, setOpen, navData }: PageProps) => {
+const MobileMenu = ({
+  open,
+  setOpen,
+  navData,
+  user,
+  logoutUser,
+}: PageProps) => {
   const [openSubmenu, setOpenSubmenu] = useState<boolean>(false);
   return (
     <div
@@ -126,6 +134,16 @@ const MobileMenu = ({ open, setOpen, navData }: PageProps) => {
           </div>
         </div>
         <div className="py-6 px-5 space-y-6">
+          {user && (
+            <div>
+              <button
+                onClick={logoutUser}
+                className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Sign out
+              </button>
+            </div>
+          )}
           {/* <div>
                 <a
                   href="#"
