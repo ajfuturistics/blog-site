@@ -5,11 +5,12 @@ import DataTable from "react-data-table-component";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import axios from "axios";
 import { customStyles } from "@/utils/tablestyles";
+import Link from "next/link";
 
 const columns = [
   {
     name: "Name",
-    selector: (row: UserData) => row.name,
+    selector: (row: UserData) => row.username,
     sortable: true,
   },
   {
@@ -20,11 +21,20 @@ const columns = [
   },
   {
     name: "Action",
-    selector: (row: UserData) => row.role,
-    cell: () => (
-      <button className="flex justify-center items-center gap-2 bg-indigo-700 hover:bg-indigo-500 text-white rounded-md py-1 px-2 transition-all duration-300 ">
-        <BiEdit size={20} /> <span>Edit</span>
-      </button>
+    cell: (row: UserData) => (
+      <>
+        {row?.role === "admin" ? (
+          <span></span>
+        ) : (
+          <Link
+            href={`/admin/user/update?id=${row?._id}`}
+            className="flex justify-center items-center gap-2 bg-indigo-700 hover:bg-indigo-500 text-white rounded-md py-1 px-2 transition-all duration-300 "
+          >
+            <BiEdit className="text-xs md:text-sm" />{" "}
+            <span className="text-xs md:text-sm">Edit</span>
+          </Link>
+        )}
+      </>
     ),
     grow: 0.3,
   },

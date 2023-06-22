@@ -5,6 +5,7 @@ import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
 import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 const navData: NavData[] = [
   { id: 1, title: "Home" },
@@ -21,12 +22,11 @@ const Nav = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [flyerTwo, setFlyerTwo] = useState<boolean>(false);
 
-  const user = JSON.parse(localStorage.getItem("user")!);
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const logoutUser = () => {
-    localStorage.removeItem("user");
-    router.push("/");
+  const logoutUser = async () => {
+    await signOut();
     router.refresh();
   };
 
@@ -77,7 +77,7 @@ const Nav = () => {
               navData={navData}
               flyerTwo={flyerTwo}
               setFlyerTwo={setFlyerTwo}
-              user={user}
+              user={session?.user}
               logoutUser={logoutUser}
             />
           </div>
@@ -97,7 +97,7 @@ const Nav = () => {
           open={open}
           setOpen={setOpen}
           navData={navData}
-          user={user}
+          user={session?.user}
           logoutUser={logoutUser}
         />
       </div>

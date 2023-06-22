@@ -1,8 +1,15 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Table from "@/components/Table/Table";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
-const AdminHome = () => {
+const AdminHome = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    throw new Error("You must be logged in to access the page");
+  }
+
   return (
     <div className="mt-4 p-1 md:p-4">
       <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">

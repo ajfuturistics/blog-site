@@ -3,16 +3,16 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useRef } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 const AdminLogin = () => {
+  const { data: session } = useSession();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
 
-  const user = JSON.parse(localStorage.getItem("user")!);
-
-  const handleLogin = (e: FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     if (
@@ -21,21 +21,29 @@ const AdminLogin = () => {
     ) {
       alert("fill all fields");
     }
-
-    const data = {
+    await signIn("credentials", {
+      redirect: false,
       username: usernameRef.current?.value,
       password: passwordRef.current?.value,
-    };
-
-    localStorage.setItem("user", JSON.stringify(data));
-    router.refresh();
+    })
+      .then((res) => {
+        if (!res?.error) {
+          router.push("/admin/home");
+        } else {
+          console.log(res?.error);
+          alert(res?.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    if (user) {
+    if (session) {
       router.push("/admin/home");
     }
-  }, [user, router]);
+  }, [session, router]);
 
   return (
     <section className="flex my-8">

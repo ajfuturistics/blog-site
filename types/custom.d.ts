@@ -12,18 +12,29 @@ interface BlogData {
   category: string;
 }
 interface PostData {
-  banner: string;
+  banner: File | string | null;
   title: string;
   category: string;
   desc: string;
 }
 
 interface UserData {
-  id: number;
-  name: string;
+  _id: string;
+  username: string;
   role: string;
+}
+interface User {
+  id: string;
+  username: string;
+  role: string;
+  password: string;
 }
 interface ApiUsersData {
   users: UserData[];
   total: number;
+}
+
+interface Session {
+  user: User;
+  expires: string;
 }

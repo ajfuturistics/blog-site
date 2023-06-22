@@ -2,25 +2,39 @@
 
 import axios from "axios";
 import Link from "next/link";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent, useRef, useState } from "react";
 
 const UserForm = () => {
-  const [user, setUser] = useState({
-    username: "",
-    password: "",
-  });
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {
     setSubmitting(true);
     e.preventDefault();
+    if (
+      (usernameRef && usernameRef?.current?.value === "") ||
+      (passwordRef && passwordRef?.current?.value === "")
+    ) {
+      alert("username and password required");
+      return;
+    }
     axios
-      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/add`, user)
+      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/signup`, {
+        username: usernameRef?.current?.value,
+        password: passwordRef?.current?.value,
+      })
       .then((res) => {
         console.log(res.data);
+        alert(res.data?.message);
+        router.push("/admin/home");
       })
       .catch((err) => {
         console.log(err);
+        alert(err?.response?.data?.message);
       })
       .finally(() => setSubmitting(false));
   };
@@ -43,6 +57,7 @@ const UserForm = () => {
               className="w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
               type="text"
               name="username"
+              ref={usernameRef}
             />
           </div>
           <div>
@@ -53,6 +68,7 @@ const UserForm = () => {
               className="w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
               type="text"
               name="a-password"
+              ref={passwordRef}
             />
           </div>
 

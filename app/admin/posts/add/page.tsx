@@ -18,18 +18,44 @@ const PostAddForm = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files?.length > 0) {
+      let file = e?.target?.files[0];
+      //   let fileReader = new FileReader();
+      //   fileReader.readAsDataURL(file);
+      //   fileReader.onloadend = async () => {
+      //     if (typeof fileReader.result === "string") {
+      //       setPost({
+      //         ...post,
+      //         banner: fileReader.result,
+      //       });
+      //       setImagePreview(URL.createObjectURL(file));
+      //     }
+      //   };
+
+      setPost({
+        ...post,
+        banner: file,
+      });
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = (e: FormEvent) => {
     setSubmitting(true);
     e.preventDefault();
-    axios
-      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/add`, post)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setSubmitting(false));
+    console.log({ ...post, desc: editorRef.current?.getContent() });
+
+    // axios
+    //   .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/add`, post)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   })
+    //   .finally(() => setSubmitting(false));
+    setSubmitting(false);
   };
 
   return (
@@ -63,17 +89,7 @@ const PostAddForm = () => {
                       type="file"
                       className="hidden"
                       accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files) {
-                          setImagePreview(
-                            URL.createObjectURL(e?.target?.files[0])
-                          );
-                          setPost({
-                            ...post,
-                            banner: URL.createObjectURL(e?.target?.files[0]),
-                          });
-                        }
-                      }}
+                      onChange={handleFileChange}
                     />
                   </label>
                 </div>
