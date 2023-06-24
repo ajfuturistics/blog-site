@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { BiEdit, BiTrash } from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
 import axios from "axios";
 import { customStyles } from "@/utils/tablestyles";
 import Link from "next/link";
@@ -51,7 +51,6 @@ function Table() {
       .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user?page=${page}`)
       .then((res) => {
         setApiData(res?.data);
-        console.log(res?.data);
       })
       .catch((err) => {
         console.log(err);

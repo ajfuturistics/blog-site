@@ -32,7 +32,7 @@ export const POST = async (request: Request) => {
       password: hashedPass,
     });
 
-    newUser.save();
+    await newUser.save();
 
     return NextResponse.json(
       { message: "User added successfully", user: newUser },

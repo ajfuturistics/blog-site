@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import moment from "moment";
 
 interface PageProps {
   blog: BlogData;
 }
 const BlogCard = ({ blog }: PageProps) => {
+  const dateTimeAgo = moment(new Date(blog?.updatedAt)).fromNow();
   return (
     <article className="flex flex-col dark:bg-gray-900">
       <Image
@@ -29,8 +30,8 @@ const BlogCard = ({ blog }: PageProps) => {
           {blog.title}
         </h3>
         <div className="flex flex-wrap justify-between pt-3 space-x-2 text-xs dark:text-gray-400">
-          <span>{blog.date}</span>
-          <Link href={`/blog/${blog.id}`}>Read more</Link>
+          <span>{dateTimeAgo}</span>
+          <Link href={`/blog/${blog._id}`}>Read more</Link>
         </div>
       </div>
     </article>

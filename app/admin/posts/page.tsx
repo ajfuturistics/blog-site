@@ -1,14 +1,36 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AdminBlogCard from "@/components/AdminBlogCard/AdminBlogCard";
+import Pagination from "@/components/Pagination/Pagination";
+import SearchBar from "@/components/SearchBar/SearchBar";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
-const Posts = async () => {
+async function getAllBlogs(page: number) {
+  const data = await fetch(`${process.env.BASE_URL}/api/blog?page=${page}`, {
+    cache: "no-store",
+  });
+
+  if (!data.ok) {
+    throw new Error("Failed to fetch blogs");
+  }
+
+  return data.json();
+}
+
+interface PageProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+const Posts = async ({ searchParams }: PageProps) => {
   const session = await getServerSession(authOptions);
+
   if (!session) {
     throw new Error("You must be logged in to access the page");
   }
+  const data: { blogs: BlogData[]; total: number; totalPages: number } =
+    await getAllBlogs(Number(searchParams?.page) || 1);
+
   return (
     <section className="mt-4 p-1 md:p-4">
       <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
@@ -40,11 +62,15 @@ const Posts = async () => {
         </div>
       </div>
 
+      <SearchBar />
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-2">
-        <AdminBlogCard />
-        <AdminBlogCard />
-        <AdminBlogCard />
+        {data.blogs.map((blog) => (
+          <AdminBlogCard key={blog?._id} blog={blog} />
+        ))}
       </div>
+
+      <Pagination totalPages={data?.totalPages} />
     </section>
   );
 };

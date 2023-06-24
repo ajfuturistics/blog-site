@@ -3,14 +3,16 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { FormEvent, useState, useRef } from "react";
+import React, { FormEvent, useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const PostAddForm = () => {
+const PostEditForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const postId = searchParams.get("id");
 
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [post, setPost] = useState<PostData>({
@@ -22,6 +24,7 @@ const PostAddForm = () => {
   });
   const [imagePreview, setImagePreview] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files?.length > 0) {
@@ -79,7 +82,7 @@ const PostAddForm = () => {
     }
     setSubmitting(true);
     axios
-      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog`, data)
+      .put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/${postId}`, data)
       .then((res) => {
         console.log(res.data);
         alert(res.data.message);
@@ -91,6 +94,40 @@ const PostAddForm = () => {
       })
       .finally(() => setSubmitting(false));
   };
+
+  const handleDelete = (e: FormEvent) => {
+    e.preventDefault();
+    setDeleting(true);
+    axios
+      .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/${postId}`)
+      .then((res) => {
+        alert(res?.data?.message);
+        router.push("/admin/home");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err?.response?.data?.message);
+      })
+      .finally(() => setDeleting(false));
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/${postId}`)
+        .then((res) => {
+          setPost(res?.data?.post);
+          setImagePreview(res?.data?.post?.banner);
+          editorRef.current?.setContent(res?.data?.post?.desc);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err?.response?.data?.message);
+        })
+        .finally(() => setSubmitting(false));
+    };
+    if (postId) fetchUser();
+  }, [postId, router]);
 
   return (
     <section className="flex my-8">
@@ -225,10 +262,19 @@ const PostAddForm = () => {
           <div className="flex mx-3 my-5 gap-2 ">
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || deleting}
               className="flex justify-center items-center gap-2 bg-indigo-700 hover:bg-indigo-500 text-white rounded-md py-1 px-2 transition-all duration-300 "
             >
-              {submitting ? `Submitting...` : "Add"}
+              {submitting ? `Submitting...` : "Edit"}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={deleting || submitting}
+              className="flex justify-center items-center gap-2 bg-indigo-700 hover:bg-indigo-500 text-white rounded-md py-1 px-2 transition-all duration-300 "
+            >
+              {submitting ? `Submitting...` : "delete"}
             </button>
 
             <Link
@@ -244,4 +290,4 @@ const PostAddForm = () => {
   );
 };
 
-export default PostAddForm;
+export default PostEditForm;

@@ -5,14 +5,21 @@ interface NavData {
 }
 
 interface BlogData {
-  id: number;
-  banner: string;
+  _id: number;
+  banner?: string;
+  imageDesc?: string;
   title: string;
-  date: string;
+  desc: string;
   category: string;
+  createdAt: string;
+  updatedAt: string;
+  userId?: {
+    username: string;
+  };
 }
 interface PostData {
-  banner: File | string | null;
+  banner?: File | string | null;
+  imageDesc?: string;
   title: string;
   category: string;
   desc: string;
