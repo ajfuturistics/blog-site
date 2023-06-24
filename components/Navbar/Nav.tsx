@@ -10,7 +10,7 @@ import { signOut, useSession } from "next-auth/react";
 const navData: NavData[] = [
   { id: 1, title: "Home" },
   { id: 2, title: "About" },
-  { id: 3, title: "Latest" },
+  { id: 3, title: "Search" },
   {
     id: 4,
     title: "Categories",

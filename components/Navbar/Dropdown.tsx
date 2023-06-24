@@ -64,7 +64,10 @@ const Dropdown = ({ title, subitems, flyerTwo, setFlyerTwo }: PageProps) => {
             {subitems.map((subitem, idx: number) => (
               <Link
                 key={`d-${subitem}-${idx}`}
-                href={subitem.toLowerCase().split(" ").join("-")}
+                href={`search?category=${subitem
+                  .toLowerCase()
+                  .split(" ")
+                  .join("-")}`}
                 className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50"
               >
                 <div className="ml-4">

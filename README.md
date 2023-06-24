@@ -4,6 +4,6 @@ Simple blog clone with admin panel
 
 ## TODO
 
-- Search
+- Adding More TinyMCE features
 - Custom Toast
 - Error validations

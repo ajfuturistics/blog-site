@@ -1,23 +1,59 @@
-import React from "react";
+"use client";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import React, { FormEvent, useEffect, useRef } from "react";
 
 const SearchBar = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const category = searchParams.get("category") || "all";
+  const query = searchParams.get("query") || "";
+
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  const categoryRef = useRef<HTMLSelectElement | null>(null);
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+
+    let pathurl = `${pathname}?`;
+    if (!category && !query) {
+      return;
+    }
+    if (categoryRef.current?.value && searchRef.current?.value) {
+      pathurl += `category=${categoryRef.current?.value}&query=${searchRef.current?.value}`;
+    } else if (categoryRef.current?.value) {
+      pathurl += `category=${categoryRef.current?.value}`;
+    } else if (searchRef.current?.value) {
+      pathurl += `query=${searchRef.current?.value}`;
+    }
+
+    router.push(pathurl);
+  };
+
+  useEffect(() => {
+    if (categoryRef?.current && category) {
+      categoryRef!.current.value = category;
+    }
+    if (searchRef?.current && query) {
+      searchRef!.current.value = query;
+    }
+  }, [category, query]);
+
   return (
     <div className="box pt-6">
       <div className="box-wrapper">
         <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
           <input
             type="search"
-            name=""
-            id=""
+            ref={searchRef}
             placeholder="search for posts"
             className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
           />
 
           <div className="select">
             <select
-              name=""
-              id=""
-              x-model="image_type"
+              ref={categoryRef}
               className="text-sm outline-none focus:outline-none bg-transparent"
             >
               <option value="all" selected>
@@ -30,7 +66,10 @@ const SearchBar = () => {
             </select>
           </div>
 
-          <button className="outline-none focus:outline-none mx-4">
+          <button
+            onClick={handleSearch}
+            className="outline-none focus:outline-none mx-4"
+          >
             <svg
               className=" w-5 text-gray-600 h-5 cursor-pointer"
               fill="none"

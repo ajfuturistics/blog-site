@@ -6,10 +6,13 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
-async function getAllBlogs(page: number) {
-  const data = await fetch(`${process.env.BASE_URL}/api/blog?page=${page}`, {
-    cache: "no-store",
-  });
+async function getAllBlogs(page: number, category: string, query: string) {
+  const data = await fetch(
+    `${process.env.BASE_URL}/api/blog?page=${page}&category=${category}&query=${query}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!data.ok) {
     throw new Error("Failed to fetch blogs");
@@ -19,7 +22,7 @@ async function getAllBlogs(page: number) {
 }
 
 interface PageProps {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | undefined };
 }
 
 const Posts = async ({ searchParams }: PageProps) => {
@@ -29,7 +32,11 @@ const Posts = async ({ searchParams }: PageProps) => {
     throw new Error("You must be logged in to access the page");
   }
   const data: { blogs: BlogData[]; total: number; totalPages: number } =
-    await getAllBlogs(Number(searchParams?.page) || 1);
+    await getAllBlogs(
+      Number(searchParams?.page) || 1,
+      searchParams?.category || "all",
+      searchParams?.query || ""
+    );
 
   return (
     <section className="mt-4 p-1 md:p-4">

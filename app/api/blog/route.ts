@@ -6,11 +6,27 @@ import { authOptions } from "../auth/[...nextauth]/route";
 
 export const GET = async (request: NextRequest) => {
   const page = Number(request.nextUrl.searchParams.get("page")) || 1;
+  const category = request.nextUrl.searchParams.get("category");
+  const query = request.nextUrl.searchParams.get("query") || "";
 
   try {
     await connectToDB();
 
-    const posts = await await Post.find({})
+    const obj: any = {};
+
+    if (category !== "") {
+      obj.category = { $regex: category, $options: "i" };
+    }
+    if (!category || category === "all") {
+      delete obj["category"];
+    }
+    if (query || query !== "") {
+      obj.title = { $regex: query, $options: "i" };
+    }
+
+    console.log(obj);
+
+    const posts = await Post.find(obj)
       .sort({ updatedAt: -1 })
       .select(["-desc", "-imageDesc"])
       .populate({ path: "userId", select: "username" })
