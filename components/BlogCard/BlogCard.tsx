@@ -12,7 +12,7 @@ const BlogCard = ({ blog }: PageProps) => {
       <Image
         alt=""
         className="object-cover w-full h-52 dark:bg-gray-500"
-        src={blog.banner}
+        src={blog.banner || "/assets/images/placeholder.jpg"}
         width="0"
         height="0"
         sizes="100vw"
