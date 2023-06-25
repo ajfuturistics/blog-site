@@ -2,11 +2,17 @@ import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import { hash, genSalt } from "bcryptjs";
 import { NextResponse } from "next/server";
+import { authOptions } from "../[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export const POST = async (request: Request) => {
   const { username, password } = await request.json();
 
-  console.log({ username, password });
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: "Login to add user" }, { status: 401 });
+  }
 
   if (!username || !password) {
     return NextResponse.json({ message: "Invalid Data" }, { status: 422 });

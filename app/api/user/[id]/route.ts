@@ -1,7 +1,9 @@
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import { genSalt, hash } from "bcryptjs";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export const GET = async (
   request: NextRequest,
@@ -39,6 +41,14 @@ export const PUT = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json(
+      { message: "Login to update user" },
+      { status: 401 }
+    );
+  }
   const id = params.id;
   const { username, password } = await request.json();
 
@@ -81,6 +91,14 @@ export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json(
+      { message: "Login to delete user" },
+      { status: 401 }
+    );
+  }
   const id = params.id;
 
   try {

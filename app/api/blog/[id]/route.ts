@@ -1,6 +1,8 @@
 import Post from "@/models/posts";
 import { connectToDB } from "@/utils/database";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 export const GET = async (
   request: Request,
@@ -34,6 +36,14 @@ export const PUT = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json(
+      { message: "Login to update post" },
+      { status: 401 }
+    );
+  }
   const id = params.id;
   const { banner, imageDesc, title, category, desc } = await request.json();
 
@@ -73,6 +83,14 @@ export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json(
+      { message: "Login to delete post" },
+      { status: 401 }
+    );
+  }
   const id = params.id;
 
   try {
