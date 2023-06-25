@@ -6,8 +6,8 @@ import Link from "next/link";
 import React, { FormEvent, useState, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 const PostAddForm = () => {
   const router = useRouter();
@@ -26,7 +26,6 @@ const PostAddForm = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files?.length > 0) {
       let file = e?.target?.files[0];
-      console.log(file);
 
       const fsize = Math.round(file.size / 1024);
 
@@ -34,13 +33,13 @@ const PostAddForm = () => {
       var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
 
       if (!allowedExtensions.exec(file.name)) {
-        alert("Invalid file type");
+        toast.error("Invalid file type");
         return;
       }
 
       // Checking image size
       if (fsize >= 4096) {
-        alert("Image too Big, please select a file less than 4mb");
+        toast.error("Image too Big, please select a file less than 4mb");
         return;
       }
 
@@ -70,24 +69,30 @@ const PostAddForm = () => {
     const data = { ...post, desc: editorRef.current?.getContent() };
 
     if (!data.title || !data.category || !data.desc) {
-      alert("Fill all required fields");
+      toast.error("Fill all required fields");
       return;
     }
     if (data?.desc.length <= 300) {
-      alert("Post description is too short");
+      toast.error("Post description is too short");
       return;
     }
     setSubmitting(true);
+    const toastId = toast.loading("Loading...");
+
     axios
       .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog`, data)
       .then((res) => {
         console.log(res.data);
-        alert(res.data.message);
+        toast.success(res.data.message || "Post added successfully", {
+          id: toastId,
+        });
         router.push("/admin/posts");
       })
       .catch((err) => {
         console.log(err);
-        alert(err.response.data.message);
+        toast.error(err.response.data.message || "Something went wrong", {
+          id: toastId,
+        });
       })
       .finally(() => setSubmitting(false));
   };

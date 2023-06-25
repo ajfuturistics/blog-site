@@ -60,6 +60,7 @@ const AdminHome = async () => {
           </Link>
         </div>
       </div>
+
       <Table />
     </div>
   );

@@ -2,6 +2,7 @@ import Nav from "@/components/Navbar/Nav";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Provider from "@/components/Provider/Provider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Provider>
           <Nav />
           {children}
+          <Toaster position="top-center" reverseOrder={true} />
         </Provider>
       </body>
     </html>

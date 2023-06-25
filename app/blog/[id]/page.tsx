@@ -9,7 +9,7 @@ async function getBlogById(postId: string) {
   });
 
   if (!data.ok) {
-    throw new Error("Failed to fetch blogs");
+    throw new Error("Failed to fetch blog");
   }
 
   return data.json();

@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const UserForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
@@ -19,7 +20,7 @@ const UserForm = () => {
       (usernameRef && usernameRef?.current?.value === "") ||
       (passwordRef && passwordRef?.current?.value === "")
     ) {
-      alert("username and password required");
+      toast.error("username and password required");
       return;
     }
     axios
@@ -29,12 +30,12 @@ const UserForm = () => {
       })
       .then((res) => {
         console.log(res.data);
-        alert(res.data?.message);
+        toast.success(res.data?.message || "New user added");
         router.push("/admin/home");
       })
       .catch((err) => {
         console.log(err);
-        alert(err?.response?.data?.message);
+        toast.error(err?.response?.data?.message || "Failed to add new user");
       })
       .finally(() => setSubmitting(false));
   };

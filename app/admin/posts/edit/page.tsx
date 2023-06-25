@@ -7,6 +7,7 @@ import React, { FormEvent, useState, useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 const PostEditForm = () => {
   const router = useRouter();
@@ -37,13 +38,13 @@ const PostEditForm = () => {
       var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.webp)$/i;
 
       if (!allowedExtensions.exec(file.name)) {
-        alert("Invalid file type");
+        toast.error("Invalid file type");
         return;
       }
 
       // Checking image size
       if (fsize >= 4096) {
-        alert("Image too Big, please select a file less than 4mb");
+        toast.error("Image too Big, please select a file less than 4mb");
         return;
       }
 
@@ -73,11 +74,11 @@ const PostEditForm = () => {
     const data = { ...post, desc: editorRef.current?.getContent() };
 
     if (!data.title || !data.category || !data.desc) {
-      alert("Fill all required fields");
+      toast.error("Fill all required fields");
       return;
     }
     if (data?.desc.length <= 300) {
-      alert("Post description is too short");
+      toast.error("Post description is too short");
       return;
     }
     setSubmitting(true);
@@ -85,12 +86,12 @@ const PostEditForm = () => {
       .put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/${postId}`, data)
       .then((res) => {
         console.log(res.data);
-        alert(res.data.message);
+        toast.success(res.data.message || "Post updated");
         router.push("/admin/posts");
       })
       .catch((err) => {
         console.log(err);
-        alert(err.response.data.message);
+        toast.error(err.response.data.message || "Something went wrong");
       })
       .finally(() => setSubmitting(false));
   };
@@ -98,15 +99,20 @@ const PostEditForm = () => {
   const handleDelete = (e: FormEvent) => {
     e.preventDefault();
     setDeleting(true);
+    const toastId = toast.loading("Loading...");
     axios
       .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blog/${postId}`)
       .then((res) => {
-        alert(res?.data?.message);
+        toast.success(res?.data?.message || "Post deleted", {
+          id: toastId,
+        });
         router.push("/admin/home");
       })
       .catch((err) => {
         console.log(err);
-        alert(err?.response?.data?.message);
+        toast.error(err?.response?.data?.message || "Failed to delete post", {
+          id: toastId,
+        });
       })
       .finally(() => setDeleting(false));
   };

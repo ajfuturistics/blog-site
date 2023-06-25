@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const UserUpdateForm = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +24,7 @@ const UserUpdateForm = () => {
       (username && username === "") ||
       (passwordRef && passwordRef?.current?.value === "")
     ) {
-      alert("username and password required");
+      toast.error("username and password required");
       return;
     }
     axios
@@ -33,12 +34,12 @@ const UserUpdateForm = () => {
       })
       .then((res) => {
         console.log(res.data);
-        alert(res?.data?.message);
+        toast.success(res?.data?.message || "User updated successfully");
         router.push("/admin/home");
       })
       .catch((err) => {
         console.log(err);
-        alert(err?.response?.data?.message);
+        toast.error(err?.response?.data?.message || "Failed to update user");
       })
       .finally(() => setSubmitting(false));
   };
@@ -49,12 +50,12 @@ const UserUpdateForm = () => {
       .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}`)
       .then((res) => {
         console.log(res.data);
-        alert(res?.data?.message);
+        toast.success(res?.data?.message || "User removed sucessfully");
         router.push("/admin/home");
       })
       .catch((err) => {
         console.log(err);
-        alert(err?.response?.data?.message);
+        toast.error(err?.response?.data?.message || "Failed to delete user");
       })
       .finally(() => setDeleting(false));
   };

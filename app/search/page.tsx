@@ -42,11 +42,17 @@ export default async function Search({ searchParams }: PageProps) {
 
           <SearchBar />
 
-          <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
-            {data.blogs.map((blog) => (
-              <BlogCard key={blog?._id} blog={blog} />
-            ))}
-          </div>
+          {Array.isArray(data?.blogs) && data?.blogs.length !== 0 ? (
+            <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
+              {data.blogs.map((blog) => (
+                <BlogCard key={blog?._id} blog={blog} />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2 text-center">
+              <h3 className="text-lg font-semibold">No results found</h3>
+            </div>
+          )}
 
           <Pagination totalPages={data?.totalPages} />
         </div>
