@@ -205,18 +205,12 @@ const PostAddForm = () => {
               init={{
                 height: 500,
                 menubar: false,
-                plugins: [
-                  "advlist autolink lists link image charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table paste code help wordcount",
-                ],
+                plugins:
+                  "advcode advlist advtable anchor autocorrect autolink autosave casechange charmap checklist codesample directionality editimage emoticons export footnotes formatpainter help insertdatetime link linkchecker lists media mediaembed mergetags nonbreaking pagebreak permanentpen powerpaste searchreplace table tableofcontents tinymcespellchecker typography visualblocks visualchars wordcount",
                 toolbar:
-                  "undo redo | formatselect | " +
-                  "bold italic backcolor | alignleft aligncenter " +
-                  "alignright alignjustify | bullist numlist outdent indent | " +
-                  "removeformat | help",
-                content_style:
-                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  "undo redo spellcheckdialog  | blocks fontfamily fontsize | bold italic underline forecolor backcolor link | align lineheight checklist bullist numlist | indent outdent | removeformat typography",
+                // content_style:
+                //   "body { font-family:inherit,Arial,sans-serif; font-size:14px }",
               }}
             />
           </div>
