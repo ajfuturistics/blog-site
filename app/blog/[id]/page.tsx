@@ -3,6 +3,29 @@ import React from "react";
 import { BsFillClockFill, BsPersonCircle, BsTagFill } from "react-icons/bs";
 import moment from "moment";
 
+import { Metadata, ResolvingMetadata } from "next";
+
+interface PageProps {
+  params?: { id: string };
+}
+
+export async function generateMetadata(
+  { params }: PageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const postId = params?.id;
+
+  // fetch data
+  const data = await fetch(`${process.env.BASE_URL}/api/blog/${postId}`).then(
+    (res) => res.json()
+  );
+
+  return {
+    title: data?.post?.title || "Blog site",
+  };
+}
+
 async function getBlogById(postId: string) {
   const data = await fetch(`${process.env.BASE_URL}/api/blog/${postId}`, {
     cache: "no-store",
@@ -15,9 +38,6 @@ async function getBlogById(postId: string) {
   return data.json();
 }
 
-interface PageProps {
-  params?: { id: string };
-}
 const BlogDetails = async ({ params }: PageProps) => {
   const postId = params?.id;
   const data: { post: BlogData } = await getBlogById(postId || "");

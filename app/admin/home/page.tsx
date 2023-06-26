@@ -4,6 +4,12 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
+export const metadata = {
+  title: "Admin Home",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const AdminHome = async () => {
   const session = await getServerSession(authOptions);
   if (!session) {

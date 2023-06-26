@@ -9,6 +9,12 @@ import { Editor as TinyMCEEditor } from "tinymce";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 
+export const metadata = {
+  title: "Admin Update Post",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const PostEditForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();

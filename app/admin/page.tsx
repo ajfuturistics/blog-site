@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useRef } from "react";
 import { signIn, useSession } from "next-auth/react";
 
+export const metadata = {
+  title: "Admin Login",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const AdminLogin = () => {
   const { data: session } = useSession();
   const usernameRef = useRef<HTMLInputElement>(null);

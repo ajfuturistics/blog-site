@@ -6,6 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
+export const metadata = {
+  title: "Admin Update User",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const UserUpdateForm = () => {
   const [username, setUsername] = useState("");
   const passwordRef = useRef<HTMLInputElement | null>(null);

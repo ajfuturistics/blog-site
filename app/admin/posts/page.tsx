@@ -6,6 +6,12 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 
+export const metadata = {
+  title: "Admin Manage Posts",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 async function getAllBlogs(page: number, category: string, query: string) {
   const data = await fetch(
     `${process.env.BASE_URL}/api/blog?page=${page}&category=${category}&query=${query}`,

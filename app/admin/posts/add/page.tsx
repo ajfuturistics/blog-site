@@ -9,6 +9,12 @@ import { Editor as TinyMCEEditor } from "tinymce";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
+export const metadata = {
+  title: "Admin Add New Post",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const PostAddForm = () => {
   const router = useRouter();
 

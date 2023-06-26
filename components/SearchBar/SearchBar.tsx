@@ -2,6 +2,12 @@
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useRef } from "react";
 
+export const metadata = {
+  title: "Search Blogs",
+  description:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aperiam dicta possimus voluptatem laboriosam quidem fugiat expedita ipsam officia animi!",
+};
+
 const SearchBar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
