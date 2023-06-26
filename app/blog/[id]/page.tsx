@@ -62,7 +62,9 @@ const BlogDetails = async ({ params }: PageProps) => {
           </span>
           <span className="flex flex-row items-center hover:text-indigo-600  mr-3">
             <BsPersonCircle />
-            <span className="ml-1">{data?.post?.userId?.username}</span>
+            <span className="ml-1">
+              {data?.post?.userId?.username || "Admin"}
+            </span>
           </span>
           <span className="flex flex-row items-center hover:text-indigo-600">
             <BsTagFill />
