@@ -102,14 +102,14 @@ const MobileMenu = ({
                           {data.subitems.map((subitem, idx: number) => (
                             <Link
                               key={`${subitem}-${idx}`}
-                              href={`search?category=${subitem
+                              href={`search?category=${subitem.value
                                 .toLowerCase()
                                 .split(" ")
                                 .join("-")}`}
                               className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
                             >
                               <span className="ml-3 text-base font-medium text-gray-900">
-                                {subitem}
+                                {subitem.name}
                               </span>
                             </Link>
                           ))}

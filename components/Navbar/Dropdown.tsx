@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction } from "react";
 
 interface PageProps {
   title: string;
-  subitems: string[];
+  subitems: categoryData[];
   flyerTwo: boolean;
   setFlyerTwo: Dispatch<SetStateAction<boolean>>;
 }
@@ -64,7 +64,7 @@ const Dropdown = ({ title, subitems, flyerTwo, setFlyerTwo }: PageProps) => {
             {subitems.map((subitem, idx: number) => (
               <Link
                 key={`d-${subitem}-${idx}`}
-                href={`search?category=${subitem
+                href={`search?category=${subitem.value
                   .toLowerCase()
                   .split(" ")
                   .join("-")}`}
@@ -72,7 +72,7 @@ const Dropdown = ({ title, subitems, flyerTwo, setFlyerTwo }: PageProps) => {
               >
                 <div className="ml-4">
                   <p className="text-base font-medium text-gray-900">
-                    {subitem}
+                    {subitem.name}
                   </p>
                 </div>
               </Link>

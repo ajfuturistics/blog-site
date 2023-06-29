@@ -8,6 +8,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { categoryData } from "@/utils/categoryData";
 
 export const metadata = {
   title: "Admin Update Post",
@@ -236,10 +237,11 @@ const PostEditForm = () => {
               }
             >
               <option value="">Select Category</option>
-              <option value="blog">Blog</option>
-              <option value="job">Job</option>
-              <option value="news">News</option>
-              <option value="info">Information</option>
+              {categoryData.map((c) => (
+                <option key={c.id} value={c.value}>
+                  {c.name}
+                </option>
+              ))}
             </select>
           </div>
 

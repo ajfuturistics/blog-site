@@ -1,4 +1,5 @@
 "use client";
+import { categoryData } from "@/utils/categoryData";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useRef } from "react";
 
@@ -65,10 +66,11 @@ const SearchBar = () => {
               <option value="all" selected>
                 All
               </option>
-              <option value="blog">Blog</option>
-              <option value="job">Job</option>
-              <option value="news">News</option>
-              <option value="info">Information</option>
+              {categoryData.map((c) => (
+                <option key={c.id} value={c.value}>
+                  {c.name}
+                </option>
+              ))}
             </select>
           </div>
 

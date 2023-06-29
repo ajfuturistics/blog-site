@@ -1,7 +1,12 @@
+interface categoryData {
+  id: number;
+  name: string;
+  value: string;
+}
 interface NavData {
   id: number;
   title: string;
-  subitems?: string[];
+  subitems?: categoryData[];
 }
 
 interface BlogData {

@@ -6,6 +6,7 @@ import MobileMenu from "./MobileMenu";
 import DesktopMenu from "./DesktopMenu";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { categoryData } from "@/utils/categoryData";
 
 const navData: NavData[] = [
   { id: 1, title: "Home" },
@@ -14,7 +15,7 @@ const navData: NavData[] = [
   {
     id: 4,
     title: "Categories",
-    subitems: ["Blog", "Jobs", "News", "Information"],
+    subitems: categoryData,
   },
 ];
 
@@ -37,7 +38,7 @@ const Nav = () => {
           <div className="flex justify-between items-center py-6 md:justify-between md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link href="/">
-                <span className="text-2xl font-semibold">Workflow</span>
+                <span className="text-2xl font-semibold">Medineuse</span>
                 {/* <Image
                   className="h-8 w-auto sm:h-10"
                   src="/assets/logo/logo.svg"
